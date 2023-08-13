@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-imu_data = pd.read_csv("C:/Users/王佳乐/Desktop/Serial Debug 2023-8-12 174233.csv")
+imu_data = pd.read_csv("C:/Serial Debug 2023-8-12 174233.csv")
 imu_data = np.asarray(imu_data)
 
 Q = [0.01] * 4
