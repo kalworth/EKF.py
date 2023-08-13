@@ -102,6 +102,8 @@ class EKF():
     def Quternion2Angle(self,q):
         self.roll = -np.arcsin(2*(q[0]*q[2] - q[1]*q[3])) * 57.3
         self.pitch = np.arctan2((2*(q[0]*q[1] + q[1]*q[3])), (2*(q[0]*q[0] + q[3]*q[3]) - 1.0)) * 57.3
+        self.pitch_list.append(self.pitch)
+        self.roll_list.append(self.roll)
 
     def plot_angle(self, angle_list, color, angle_name):
          x = np.arange(0, len(angle_list), 1)
@@ -115,7 +117,7 @@ class EKF():
         self.a_roll_list.append(self.a_roll)
 
 
-    def EKF_filter(self,imu_sorce_data):
+    def EKF_update(self,imu_sorce_data):
         for i in range(2):
             for data in imu_sorce_data:
                 self.q = self.normalizeQuternion(self.q)
@@ -127,8 +129,6 @@ class EKF():
                 self.posterior()
                 self.update_P_matrix()
                 self.Quternion2Angle(self.q)
-                self.pitch_list.append(self.pitch)
-                self.roll_list.append(self.roll)
                 self.cal_a_angle(data[0],data[1],data[2])
 
         plt.figure()  # 画布尺寸默认
@@ -143,5 +143,5 @@ class EKF():
 
 if __name__ == "__main__":
     EKF_mode = EKF(period=0.0001)
-    EKF_mode.EKF_filter(imu_data)
+    EKF_mode.EKF_update(imu_data)
 
