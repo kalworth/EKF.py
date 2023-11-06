@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-imu_data = pd.read_csv("C:/Serial Debug 2023-8-12 174233.csv")
+imu_data = pd.read_csv("D:/Serial Debug 2023-8-23 201358.csv")
 imu_data = np.asarray(imu_data)
 
 Q = [0.01] * 4
@@ -65,7 +65,7 @@ class EKF():
         self.H_matrix = np.array([
             [-2*q[2], 2*q[3], -2*q[0], 2*q[1]],
             [2*q[1],  2*q[0],  2*q[3], 2*q[2]],
-            [2*q[0], 2*q[1], 2*q[2], 2*q[3]]
+            [2*q[0], -2*q[1], -2*q[2], 2*q[3]]
         ])
         self.HX_vector = np.array([
             2*q[1]*q[3] - 2*q[0]*q[2],
@@ -88,7 +88,8 @@ class EKF():
         )
 
     def posterior(self):
-        self.q_k = self.q + np.dot(
+        # 原来是self.q_k 改正为 self.q
+        self.q = self.q + np.dot(
             self.K_matrix,
             self.Z_vector - self.HX_vector
         )
