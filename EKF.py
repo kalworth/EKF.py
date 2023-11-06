@@ -88,7 +88,8 @@ class EKF():
         )
 
     def posterior(self):
-        self.q_k = self.q + np.dot(
+        # 原来是self.q_k 改正为 self.q
+        self.q = self.q + np.dot(
             self.K_matrix,
             self.Z_vector - self.HX_vector
         )
